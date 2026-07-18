@@ -143,9 +143,8 @@ public class StateCensusAnalyserTest {
     }
 
 
-
     /**
-     * UC2
+     * UC2 TC2.1
      * Given the State Code CSV file,
      * when loaded,
      * then the analyser should return the correct number of records.
@@ -164,6 +163,110 @@ public class StateCensusAnalyserTest {
 
         } catch (StateCensusAnalyserException e) {
             Assertions.fail(e.getMessage());
+        }
+    }
+
+
+    /**
+     * TC2.2
+     * Given an incorrect State Code CSV file path,
+     * should throw a custom exception.
+     */
+    @Test
+    public void givenWrongStateCodeCSVFile_WhenLoaded_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCodeData(
+                    "src/test/resources/WrongStateCode.csv");
+
+            Assertions.fail("Expected exception was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,
+                    e.type);
+        }
+    }
+
+
+    /**
+     * TC2.3
+     * Given a State Code file with incorrect type,
+     * should throw a custom exception.
+     */
+    @Test
+    public void givenStateCodeFile_WhenIncorrectFileType_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCodeData(
+                    "src/test/resources/IndiaStateCode.txt");
+
+            Assertions.fail("Expected exception was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_TYPE_INCORRECT,
+                    e.type);
+        }
+    }
+
+
+    /**
+     * TC2.4
+     * Given a State Code CSV file with incorrect delimiter,
+     * should throw a custom exception.
+     */
+    @Test
+    public void givenStateCodeCSVFile_WhenDelimiterIncorrect_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCodeData(
+                    "src/test/resources/IndiaStateCodeWrongDelimiter.csv");
+
+            Assertions.fail("Expected exception was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_DELIMITER_INCORRECT,
+                    e.type);
+        }
+    }
+
+
+    /**
+     * TC2.5
+     * Given a State Code CSV file with incorrect header,
+     * should throw a custom exception.
+     */
+    @Test
+    public void givenStateCodeCSVFile_WhenHeaderIncorrect_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCodeData(
+                    "src/test/resources/IndiaStateCodeWrongHeader.csv");
+
+            Assertions.fail("Expected exception was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_HEADER_INCORRECT,
+                    e.type);
         }
     }
 }
