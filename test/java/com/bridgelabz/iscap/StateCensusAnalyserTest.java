@@ -8,27 +8,32 @@ import org.junit.jupiter.api.Test;
  */
 public class StateCensusAnalyserTest {
 
-    // Replace this path with your CSV file path
-    private static final String CSV_FILE_PATH =
+    // Path to the valid State Census CSV file
+    private static final String STATE_CENSUS_CSV_FILE_PATH =
             "src/test/resources/IndiaStateCensusData.csv";
 
     /**
-     * Test to verify whether all census records are loaded successfully.
+     * TC1.1:
+     * Given a valid State Census CSV file,
+     * when the analyser loads the data,
+     * then it should return the correct number of records.
      */
     @Test
     public void givenStateCensusCSVFile_WhenLoaded_ShouldReturnCorrectRecordCount() {
 
         try {
-
+            // Create analyser object
             StateCensusAnalyser analyser = new StateCensusAnalyser();
 
-            int numberOfRecords = analyser.loadStateCensusData(CSV_FILE_PATH);
+            // Load the CSV file and get the record count
+            int recordCount = analyser.loadStateCensusData(STATE_CENSUS_CSV_FILE_PATH);
 
-            // Expected number of records in the CSV file
-            Assertions.assertEquals(29, numberOfRecords);
+            // Verify the expected number of records
+            Assertions.assertEquals(29, recordCount);
 
         } catch (Exception e) {
-            Assertions.fail(e.getMessage());
+            // Fail the test if any exception occurs
+            Assertions.fail("Test failed due to exception: " + e.getMessage());
         }
     }
 }
