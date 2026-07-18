@@ -8,8 +8,9 @@ public class StateCensusAnalyserException extends Exception {
     /**
      * Enum representing different exception types.
      */
-    enum ExceptionType {
-        CENSUS_FILE_PROBLEM
+    public enum ExceptionType {
+        CENSUS_FILE_PROBLEM,
+        CENSUS_FILE_TYPE_INCORRECT
     }
 
     public ExceptionType type;

@@ -24,10 +24,18 @@ public class StateCensusAnalyser {
             throws StateCensusAnalyserException {
 
         try {
+
+            // Check whether the file is a CSV file
+            if (!csvFilePath.toLowerCase().endsWith(".csv")) {
+                throw new StateCensusAnalyserException(
+                        "Invalid File Type. Please provide a CSV file.",
+                        StateCensusAnalyserException.ExceptionType.CENSUS_FILE_TYPE_INCORRECT);
+            }
+
             // Read the CSV file
             Reader reader = new FileReader(csvFilePath);
 
-            // Map CSV rows to Java objects
+            // Build CsvToBean object
             CsvToBean<CSVStateCensus> csvToBean =
                     new CsvToBeanBuilder<CSVStateCensus>(reader)
                             .withType(CSVStateCensus.class)
@@ -48,8 +56,11 @@ public class StateCensusAnalyser {
 
             return recordCount;
 
+        } catch (StateCensusAnalyserException e) {
+            // Re-throw custom exceptions
+            throw e;
+
         } catch (IOException e) {
-            // Throw custom exception if file is not found or cannot be read
             throw new StateCensusAnalyserException(
                     "State Census CSV File Problem",
                     StateCensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);

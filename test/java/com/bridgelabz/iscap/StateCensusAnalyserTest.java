@@ -60,4 +60,31 @@ public class StateCensusAnalyserTest {
                     e.type);
         }
     }
+
+
+
+    /**
+     * TC1.3:
+     * Given a State Census file with an incorrect file type,
+     * when the analyser loads the file,
+     * then it should throw a custom exception.
+     */
+    @Test
+    public void givenStateCensusFile_WhenIncorrectFileType_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCensusData("src/test/resources/IndiaStateCensusData.txt");
+
+            Assertions.fail("Expected StateCensusAnalyserException was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_TYPE_INCORRECT,
+                    e.type);
+        }
+    }
 }
