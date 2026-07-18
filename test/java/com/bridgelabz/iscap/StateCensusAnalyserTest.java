@@ -36,4 +36,28 @@ public class StateCensusAnalyserTest {
             Assertions.fail("Test failed due to exception: " + e.getMessage());
         }
     }
+
+
+    /**
+     * TC1.2:
+     * Given an incorrect State Census CSV file path,
+     * when the analyser loads the file,
+     * then it should throw a custom exception.
+     */
+    @Test
+    public void givenWrongStateCensusCSVFile_WhenLoaded_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+            analyser.loadStateCensusData("src/test/resources/WrongFile.csv");
+            Assertions.fail("Expected StateCensusAnalyserException was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,
+                    e.type);
+        }
+    }
 }
