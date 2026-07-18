@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvRuntimeException;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -15,24 +16,39 @@ import java.util.Iterator;
 public class StateCensusAnalyser {
 
     /**
-     * Loads the State Census CSV data and returns the number of records.
+     * Loads State Census CSV data and returns the number of records.
      *
-     * @param csvFilePath Path to the CSV file
-     * @return Number of records loaded
-     * @throws StateCensusAnalyserException if any validation fails
+     * @param csvFilePath Path of the CSV file.
+     * @return Number of records in the CSV file.
+     * @throws StateCensusAnalyserException if any validation fails.
      */
     public int loadStateCensusData(String csvFilePath)
             throws StateCensusAnalyserException {
 
         try {
 
-            // Validate file type
-            if (!csvFilePath.toLowerCase().endsWith(".csv")) {
+            // Validate file extension
+            if (!csvFilePath.endsWith(".csv")) {
                 throw new StateCensusAnalyserException(
-                        "Invalid File Type",
+                        "Incorrect File Type",
                         StateCensusAnalyserException.ExceptionType.CENSUS_FILE_TYPE_INCORRECT);
             }
 
+            // Read and validate the CSV header
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(csvFilePath));
+            String header = bufferedReader.readLine();
+
+            String expectedHeader = "State,Population,AreaInSqKm,DensityPerSqKm";
+
+            if (!expectedHeader.equals(header)) {
+                throw new StateCensusAnalyserException(
+                        "Incorrect CSV Header",
+                        StateCensusAnalyserException.ExceptionType.CENSUS_HEADER_INCORRECT);
+            }
+
+            bufferedReader.close();
+
+            // Read CSV using OpenCSV
             Reader reader = new FileReader(csvFilePath);
 
             CsvToBean<CSVStateCensus> csvToBean =
@@ -56,7 +72,6 @@ public class StateCensusAnalyser {
 
         } catch (CsvRuntimeException e) {
 
-            // Thrown when the CSV format is invalid (e.g., wrong delimiter)
             throw new StateCensusAnalyserException(
                     "Incorrect CSV Delimiter",
                     StateCensusAnalyserException.ExceptionType.CENSUS_FILE_DELIMITER_INCORRECT);
