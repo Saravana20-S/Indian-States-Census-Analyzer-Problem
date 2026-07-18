@@ -141,4 +141,29 @@ public class StateCensusAnalyserTest {
                     e.type);
         }
     }
+
+
+
+    /**
+     * UC2
+     * Given the State Code CSV file,
+     * when loaded,
+     * then the analyser should return the correct number of records.
+     */
+    @Test
+    public void givenStateCodeCSVFile_WhenLoaded_ShouldReturnCorrectRecordCount() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            int recordCount = analyser.loadStateCodeData(
+                    "src/test/resources/IndiaStateCode.csv");
+
+            Assertions.assertEquals(29, recordCount);
+
+        } catch (StateCensusAnalyserException e) {
+            Assertions.fail(e.getMessage());
+        }
+    }
 }
