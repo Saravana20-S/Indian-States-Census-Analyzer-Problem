@@ -87,4 +87,31 @@ public class StateCensusAnalyserTest {
                     e.type);
         }
     }
+
+
+    /**
+     * TC1.4:
+     * Given a State Census CSV file with an incorrect delimiter,
+     * when the analyser loads the file,
+     * then it should throw a custom exception.
+     */
+    @Test
+    public void givenStateCensusCSVFile_WhenDelimiterIncorrect_ShouldThrowCustomException() {
+
+        StateCensusAnalyser analyser = new StateCensusAnalyser();
+
+        try {
+
+            analyser.loadStateCensusData(
+                    "src/test/resources/IndiaStateCensusWrongDelimiter.csv");
+
+            Assertions.fail("Expected StateCensusAnalyserException was not thrown.");
+
+        } catch (StateCensusAnalyserException e) {
+
+            Assertions.assertEquals(
+                    StateCensusAnalyserException.ExceptionType.CENSUS_FILE_DELIMITER_INCORRECT,
+                    e.type);
+        }
+    }
 }

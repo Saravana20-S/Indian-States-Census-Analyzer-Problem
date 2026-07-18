@@ -10,7 +10,8 @@ public class StateCensusAnalyserException extends Exception {
      */
     public enum ExceptionType {
         CENSUS_FILE_PROBLEM,
-        CENSUS_FILE_TYPE_INCORRECT
+        CENSUS_FILE_TYPE_INCORRECT,
+        CENSUS_FILE_DELIMITER_INCORRECT
     }
 
     public ExceptionType type;
